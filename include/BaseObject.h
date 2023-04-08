@@ -8,7 +8,7 @@ class BaseObject
         BaseObject();
         virtual ~BaseObject();
 
-        void setRect(const int &x  , const int& y){rect_.x = x , rect_.y = y;}
+        void setRect(const int &x  , const int& y){rect_.x = x , rect_.y = y;} // vi tri load anh
         SDL_Rect getRect() const {return rect_;} // bien const de dam bao chi lay du lieu
         SDL_Texture* getObject() const {return p_object_;}
 

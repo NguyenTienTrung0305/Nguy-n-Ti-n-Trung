@@ -3,6 +3,7 @@
 #include "CommonFuntion.h"
 #include "BaseObject.h"
 #include "AttackObject.h"
+#include "NumberOfPlayersLives.h"
 #include <vector>
 
 #define GRAVITY_SPEED 0.8
@@ -43,6 +44,29 @@ class PlayerObject : public BaseObject
         void set_attack_list(std::vector<AttackObject*> attackList){p_attack_list = attackList;}
         std::vector<AttackObject*>  get_attack_list() const {return p_attack_list;}
         void HandleAttack(SDL_Renderer* des);
+
+
+        // remove attack
+        void RemoveAttack(const int& index);
+
+        void set_time_comeback(const int& timeComeback){time_come_back = timeComeback;}
+
+        void loadImageAttack(std::string path);
+
+        Mix_Chunk* die_;
+
+        void set_y_pos(const float& yPos){y_pos = yPos;}
+
+        int num_die_ = 0;
+
+
+        // number of Player's Lives
+        void InitPlayerLives(SDL_Renderer* screen);
+        void ShowPlayerLives(SDL_Renderer* screen);
+
+        void DecreaseNumber();
+        void IncreaseNumber();
+
     protected:
 
     private:
@@ -60,7 +84,7 @@ class PlayerObject : public BaseObject
         int width_frame_;
         int heigth_frame_;
 
-        SDL_Rect frame_clip_[14]; // Lưu các frame
+        SDL_Rect frame_clip_[7]; // Lưu các frame
         keyEvents key_events_;
         int frame_; // luu chi so cua frame_clip
         int status_; // trang thai di chuyen cua nhan vat
@@ -75,7 +99,11 @@ class PlayerObject : public BaseObject
         // thoi gian delay moi khi chet truoc khi quay tro lai man hinh
         int time_come_back;
 
+
         Mix_Chunk* move_;
+        Mix_Chunk* throwknife_;
+
+        NumberOfPlayersLives players_lives;
 
 };
 

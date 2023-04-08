@@ -1,7 +1,7 @@
 #include "PlayerObject.h"
 
-//const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
 
+//const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
 
 PlayerObject::PlayerObject()
 {
@@ -28,11 +28,18 @@ PlayerObject::PlayerObject()
     time_come_back = 0;
 
     move_ = NULL;
+    throwknife_ = NULL;
+    die_ = NULL;
+
 }
 
 PlayerObject::~PlayerObject()
 {
     //dtor
+}
+
+void PlayerObject::loadImageAttack(std::string path){
+    BaseObject::loadImage(path , g_screen);
 }
 
 bool PlayerObject::loadImage(std::string path , SDL_Renderer* screen){
@@ -44,6 +51,8 @@ bool PlayerObject::loadImage(std::string path , SDL_Renderer* screen){
 
     return ret;
 }
+
+
 
 void PlayerObject::Set_Clips(){
     if ( width_frame_ > 0 &&  heigth_frame_ > 0){
@@ -114,7 +123,7 @@ void PlayerObject::HandelInputAction(SDL_Event events , SDL_Renderer* screen){
             }
             case SDLK_UP:{
                 if ( on_ground == true){
-                    move_ = Mix_LoadWAV("music//medium.wav");
+                    move_ = Mix_LoadWAV("music//jump.wav");
                     Mix_PlayChannel(-1 , move_ , 0);
                 }
                 key_events_.jump_ = 1;
@@ -144,8 +153,9 @@ void PlayerObject::HandelInputAction(SDL_Event events , SDL_Renderer* screen){
 
     if ( events.type == SDL_MOUSEBUTTONDOWN){
         if ( events.button.button == SDL_BUTTON_LEFT){
+            throwknife_ = Mix_LoadWAV("music//throwknife.wav");
+            Mix_PlayChannel(-1 , throwknife_ , 0);
             AttackObject* p_attack = new AttackObject();
-
 
             if ( status_ == WALK_LEFT){
                 p_attack->loadImage("assets//attackleft.jpg" , screen);
@@ -159,7 +169,6 @@ void PlayerObject::HandelInputAction(SDL_Event events , SDL_Renderer* screen){
 
             p_attack->set_x_val(20);
             p_attack->set_is_move(true);
-
             p_attack_list.push_back(p_attack); // nap knife
         }
     }
@@ -209,6 +218,7 @@ void PlayerObject::DoPlayer(Map& map_data){
 }
 
 
+
 void PlayerObject::CheckToMap(Map& map_data){
     int x1 = 0;
     int x2 = 0;
@@ -228,15 +238,35 @@ void PlayerObject::CheckToMap(Map& map_data){
     y2 = (y_pos + height_min -1)/ TILE_SIZE;
 
     if ( x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_y){
+        // eat hp
+        if (map_data.tile[y1][x2] == HP || map_data.tile[y2][x2] == HP || map_data.tile[y1][x1] == HP || map_data.tile[y2][x1] == HP){
+            num_die_--;
+            players_lives.IncreaseNumber();
+            map_data.tile[y1][x2] = 0;
+            map_data.tile[y2][x2] = 0;
+            map_data.tile[y1][x1] = 0;
+            map_data.tile[y2][x1] = 0;
+        }
+
+        // winner
+        if (map_data.tile[y1][x2] == PRINCESS || map_data.tile[y2][x2] == PRINCESS || map_data.tile[y1][x1] == PRINCESS || map_data.tile[y2][x1] == PRINCESS){
+            Free();
+            SDL_DestroyRenderer(g_screen);
+            g_screen = NULL;
+            SDL_DestroyWindow(g_window);
+            g_window = NULL;
+            IMG_Quit();
+            SDL_Quit();
+        }
         // moving to right
         if ( x_val_ > 0){
-            if ((map_data.tile[y1][x2] > 0 && map_data.tile[y1][x2] <= 20) ||(map_data.tile[y2][x2] > 0 && map_data.tile[y2][x2] <= 20)){
+            if ((map_data.tile[y1][x2] > 0 && map_data.tile[y1][x2] < 20) ||(map_data.tile[y2][x2] > 0 && map_data.tile[y2][x2] < 20)){
                 x_pos = x2*TILE_SIZE;
                 x_pos -= (width_frame_ +1) ; // vi tri bat dau cua nhat vat bang vi tri cu cong them luong di chuyen
                 x_val_ = 0;  // de khi gap chuong ngai vat du co an tiep cung khong di chuyen duoc
             }
         }else if (x_val_ < 0){
-            if ((map_data.tile[y1][x1] > 0 && map_data.tile[y1][x1] <= 20) || (map_data.tile[y2][x1] > 0 && map_data.tile[y2][x1] <=20 )){
+            if ((map_data.tile[y1][x1] > 0 && map_data.tile[y1][x1] < 20) || (map_data.tile[y2][x1] > 0 && map_data.tile[y2][x1] < 20 )){
                 x_pos = (x1+1)*TILE_SIZE;
                 x_val_ = 0;
             }
@@ -257,8 +287,14 @@ void PlayerObject::CheckToMap(Map& map_data){
 
 
     if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_y){
+        if (map_data.tile[y2][x1] == HP || map_data.tile[y2][x2] == HP || map_data.tile[y1][x1] == HP || map_data.tile[y1][x2] == HP){
+            map_data.tile[y2][x1] = 0;
+            map_data.tile[y2][x2] = 0;
+            map_data.tile[y1][x1] = 0;
+            map_data.tile[y1][x2] = 0;
+        }
         if (y_val_ > 0){
-            if ( (map_data.tile[y2][x1] > 0 && map_data.tile[y2][x1] <= 20) || (map_data.tile[y2][x2] > 0 && map_data.tile[y2][x2] <= 20)){
+            if ( (map_data.tile[y2][x1] > 0 && map_data.tile[y2][x1] < 20) || (map_data.tile[y2][x2] > 0 && map_data.tile[y2][x2] < 20)){
                 y_pos = y2 * TILE_SIZE;
                 y_pos -= (heigth_frame_ +1);
                 y_val_ = 0;
@@ -269,7 +305,7 @@ void PlayerObject::CheckToMap(Map& map_data){
             }
         }else if ( y_val_ < 0){
             //on_ground = false;
-            if ( (map_data.tile[y1][x1] > 0 && map_data.tile[y1][x1] <= 20) || (map_data.tile[y1][x2] > 0 && map_data.tile[y1][x2] <= 20)){
+            if ( (map_data.tile[y1][x1] > 0 && map_data.tile[y1][x1] < 20) || (map_data.tile[y1][x2] > 0 && map_data.tile[y1][x2] < 20)){
                 y_pos = (y1+1)*TILE_SIZE;
                 y_val_ = 0;
             }
@@ -287,6 +323,19 @@ void PlayerObject::CheckToMap(Map& map_data){
 
     // xu ly thoi gian chet
     if (y_pos > map_data.max_y){
+        num_die_ += 1;
+        players_lives.DecreaseNumber();
+        if (num_die_ > 5){
+            Free();
+            SDL_DestroyRenderer(g_screen);
+            g_screen = NULL;
+            SDL_DestroyWindow(g_window);
+            g_window = NULL;
+            IMG_Quit();
+            SDL_Quit();
+        }
+        die_ = Mix_LoadWAV("music//die.wav");
+        Mix_PlayChannel(-1 , die_ , 0);
         time_come_back = 60;
 
     }
@@ -349,4 +398,24 @@ void PlayerObject::HandleAttack(SDL_Renderer* des){
     }
 }
 
+// remove attack
+void PlayerObject::RemoveAttack(const int& index){
+    int size_ = p_attack_list.size();
+    if (size_ > 0 && index < size_){
+        AttackObject* p_attack = p_attack_list.at(index);
+        p_attack_list.erase(p_attack_list.begin() + index);
+    }
+}
 
+void PlayerObject::InitPlayerLives(SDL_Renderer* screen){
+    players_lives.Init(screen);
+}
+void PlayerObject::ShowPlayerLives(SDL_Renderer* screen){
+    players_lives.Show(screen);
+}
+void PlayerObject::DecreaseNumber(){
+    players_lives.DecreaseNumber();
+}
+void PlayerObject::IncreaseNumber(){
+    players_lives.IncreaseNumber();
+}

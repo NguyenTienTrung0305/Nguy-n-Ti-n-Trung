@@ -32,9 +32,9 @@ void GameMap::LoadMap(char* path){
 }
 
 void GameMap::LoadTiles(SDL_Renderer* screen){
-    char file_img[50];
+    char file_img[60];
     FILE* fp = NULL;
-    for ( int i = 0 ; i < 40 ; i++){
+    for ( int i = 0 ; i < 50 ; i++){
         sprintf_s(file_img , "map/%d.png"  , i); // chuyen doi so thanh chuoi
 
         fopen_s(&fp , file_img , "rb");

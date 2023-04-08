@@ -47,14 +47,22 @@
 		<Unit filename="include/AttackObject.h" />
 		<Unit filename="include/BaseObject.h" />
 		<Unit filename="include/CommonFuntion.h" />
+		<Unit filename="include/MonsterThreadObject.h" />
+		<Unit filename="include/NumberOfPlayersLives.h" />
 		<Unit filename="include/PlayerObject.h" />
+		<Unit filename="include/StateHp.h" />
+		<Unit filename="include/TextObject.h" />
 		<Unit filename="include/Timerfps.h" />
 		<Unit filename="include/game_map.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/AttackObject.cpp" />
 		<Unit filename="src/BaseObject.cpp" />
 		<Unit filename="src/CommonFuntion.cpp" />
+		<Unit filename="src/MonsterThreadObject.cpp" />
+		<Unit filename="src/NumberOfPlayersLives.cpp" />
 		<Unit filename="src/PlayerObject.cpp" />
+		<Unit filename="src/StateHp.cpp" />
+		<Unit filename="src/TextObject.cpp" />
 		<Unit filename="src/Timerfps.cpp" />
 		<Unit filename="src/game_map.cpp" />
 		<Extensions>

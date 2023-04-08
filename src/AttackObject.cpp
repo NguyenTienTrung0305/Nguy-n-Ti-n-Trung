@@ -5,11 +5,20 @@ AttackObject::AttackObject()
     x_val_ = 0;
     y_val_ = 0;
     is_move_ = false;
+    attack_type = KNIFE;
 }
 
 AttackObject::~AttackObject()
 {
     //dtor
+}
+
+bool AttackObject::LoadImageAttack(SDL_Renderer* screen){
+    bool ret = false;
+    if (attack_type == GATTINGGUN){
+        ret = loadImage("assets//bulletgatting.png" , screen);
+    }
+    return ret;
 }
 
 void AttackObject::HandleMove(const int& x_border  , const int& y_border){

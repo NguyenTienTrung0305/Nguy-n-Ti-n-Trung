@@ -9,10 +9,15 @@ class AttackObject : public BaseObject
         AttackObject();
         virtual ~AttackObject();
 
-        // huong attack
+        // direction attack
         enum AttackDir{
             DIR_RIGHT = 0,
             DIR_LEFT = 1 ,
+        };
+
+        enum AttackType{
+            KNIFE = 0 ,
+            GATTINGGUN = 1,
         };
 
         void set_x_val(const int& xVal){x_val_ = xVal;}
@@ -26,6 +31,12 @@ class AttackObject : public BaseObject
         void set_attack_direction(const int attackDirection) {attack_direction = attackDirection;}
         int get_attack_direction() const {return attack_direction;}
 
+
+        void set_attack_type( const int& attackType){attack_type = attackType;}
+        int get_attack_type() const {return attack_type;}
+
+
+        bool LoadImageAttack(SDL_Renderer* screen);
         void HandleMove(const int& x_border , const int& y_border);
 
     protected:
@@ -36,6 +47,9 @@ class AttackObject : public BaseObject
         bool is_move_;
 
         int attack_direction; // huong tan cong
+
+        int attack_type ; // kieu tan cong // knife , gun , ...
+
 };
 
 #endif // ATTACKOBJECT_H

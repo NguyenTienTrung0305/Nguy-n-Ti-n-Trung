@@ -32,8 +32,11 @@ const int RENDER_DRAW_COLOR = 255;
 #define TILE_SIZE  64
 
 #define MAX_MAP_X  400
-#define MAX_MAP_y 15
+#define MAX_MAP_y 10
 
+// item support
+#define HP 15
+#define PRINCESS 49
 
 typedef struct Map{
     // man hinh bat dau o toa do x , y
@@ -49,6 +52,7 @@ typedef struct Map{
     char* file_name_;
 };
 
+// trang thai di chuyen
 typedef struct keyEvents{
     int left_;
     int right_;
@@ -57,5 +61,9 @@ typedef struct keyEvents{
     int jump_;
 
 };
+
+namespace SDLCommonFuncion{
+    bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
+}
 
 #endif // COMMONFUNTION_H

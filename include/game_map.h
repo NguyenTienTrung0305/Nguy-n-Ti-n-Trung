@@ -30,7 +30,7 @@ public:
     void SetMap(Map& map_data){game_map_ = map_data;}
 private:
     Map game_map_;
-    TileMap tile_map[40]; // mảng các hình ảnh của map
+    TileMap tile_map[50]; // mảng các hình ảnh của map
 };
 
 #endif // GAME_MAP_H

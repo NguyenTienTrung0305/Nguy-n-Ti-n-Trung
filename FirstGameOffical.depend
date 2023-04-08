@@ -1,10 +1,13 @@
 # depslib dependency file v1.0
-1679152891 source:c:\users\admin\mysource\firstgameoffical\main.cpp
+1680863329 source:c:\users\admin\mysource\firstgameoffical\main.cpp
 	"CommonFuntion.h"
 	"BaseObject.h"
 	"game_map.h"
 	"PlayerObject.h"
 	"Timerfps.h"
+	"MonsterThreadObject.h"
+	"TextObject.h"
+	"NumberOfPlayersLives.h"
 
 1672757820 c:\users\admin\mysource\sdl2\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -415,10 +418,10 @@
 	"begin_code.h"
 	"close_code.h"
 
-1678252722 source:c:\users\admin\mysource\firstgameoffical\src\commonfuntion.cpp
+1679731464 source:c:\users\admin\mysource\firstgameoffical\src\commonfuntion.cpp
 	"CommonFuntion.h"
 
-1679155238 c:\users\admin\mysource\firstgameoffical\include\commonfuntion.h
+1680864431 c:\users\admin\mysource\firstgameoffical\include\commonfuntion.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
@@ -428,24 +431,25 @@
 1679071892 source:c:\users\admin\mysource\firstgameoffical\src\baseobject.cpp
 	"BaseObject.h"
 
-1679153017 c:\users\admin\mysource\firstgameoffical\include\baseobject.h
+1680110826 c:\users\admin\mysource\firstgameoffical\include\baseobject.h
 	"CommonFuntion.h"
 
-1679152728 source:c:\users\admin\mysource\firstgameoffical\src\game_map.cpp
+1680537068 source:c:\users\admin\mysource\firstgameoffical\src\game_map.cpp
 	"game_map.h"
 	<fstream>
 
-1678902423 c:\users\admin\mysource\firstgameoffical\include\game_map.h
+1680537120 c:\users\admin\mysource\firstgameoffical\include\game_map.h
 	"CommonFuntion.h"
 	"BaseObject.h"
 
-1679156922 c:\users\admin\mysource\firstgameoffical\include\playerobject.h
+1680863268 c:\users\admin\mysource\firstgameoffical\include\playerobject.h
 	"CommonFuntion.h"
 	"BaseObject.h"
 	"AttackObject.h"
+	"NumberOfPlayersLives.h"
 	<vector>
 
-1679158481 source:c:\users\admin\mysource\firstgameoffical\src\playerobject.cpp
+1680865411 source:c:\users\admin\mysource\firstgameoffical\src\playerobject.cpp
 	"PlayerObject.h"
 
 1678529397 c:\users\admin\mysource\firstgameoffical\include\timerfps.h
@@ -454,9 +458,43 @@
 	"Timerfps.h"
 	"CommonFuntion.h"
 
-1679157352 c:\users\admin\mysource\firstgameoffical\include\attackobject.h
+1679913213 c:\users\admin\mysource\firstgameoffical\include\attackobject.h
 	"BaseObject.h"
 
-1679157473 source:c:\users\admin\mysource\firstgameoffical\src\attackobject.cpp
+1679913216 source:c:\users\admin\mysource\firstgameoffical\src\attackobject.cpp
 	"AttackObject.h"
+
+1680708780 source:c:\users\admin\mysource\firstgameoffical\src\monsterthreadobject.cpp
+	"MonsterThreadObject.h"
+
+1680688771 c:\users\admin\mysource\firstgameoffical\include\monsterthreadobject.h
+	"CommonFuntion.h"
+	"BaseObject.h"
+	"AttackObject.h"
+	"StateHp.h"
+
+1679896970 source:c:\users\admin\mysource\firstgameoffical\src\displayhp.cpp
+	"DisplayHP.h"
+
+1679896782 c:\users\admin\mysource\firstgameoffical\include\displayhp.h
+	"BaseObject.h"
+
+1680014911 c:\users\admin\mysource\firstgameoffical\include\statehp.h
+	"BaseObject.h"
+
+1680015113 source:c:\users\admin\mysource\firstgameoffical\src\statehp.cpp
+	"StateHp.h"
+
+1680714869 source:c:\users\admin\mysource\firstgameoffical\src\textobject.cpp
+	"TextObject.h"
+
+1680712956 c:\users\admin\mysource\firstgameoffical\include\textobject.h
+	"CommonFuntion.h"
+
+1680863260 c:\users\admin\mysource\firstgameoffical\include\numberofplayerslives.h
+	"CommonFuntion.h"
+	"BaseObject.h"
+
+1680861892 source:c:\users\admin\mysource\firstgameoffical\src\numberofplayerslives.cpp
+	"NumberOfPlayersLives.h"
 
