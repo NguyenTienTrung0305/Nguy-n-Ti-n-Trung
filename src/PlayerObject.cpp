@@ -1,5 +1,5 @@
 #include "PlayerObject.h"
-
+#include "MenuGame.h"
 
 //const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
 

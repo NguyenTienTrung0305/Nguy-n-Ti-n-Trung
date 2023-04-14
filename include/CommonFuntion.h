@@ -6,6 +6,7 @@
 #include <SDL_ttf.h>
 #include <bits/stdc++.h>
 
+
 static SDL_Window* g_window = NULL;
 static SDL_Renderer* g_screen = NULL;
 static SDL_Event  g_event;
@@ -64,6 +65,7 @@ typedef struct keyEvents{
 
 namespace SDLCommonFuncion{
     bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
+    int ShowMenu(SDL_Renderer* menu , TTF_Font* font);
 }
 
 #endif // COMMONFUNTION_H

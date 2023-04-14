@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1680863329 source:c:\users\admin\mysource\firstgameoffical\main.cpp
+1681403761 source:c:\users\admin\mysource\firstgameoffical\main.cpp
 	"CommonFuntion.h"
 	"BaseObject.h"
 	"game_map.h"
@@ -8,6 +8,7 @@
 	"MonsterThreadObject.h"
 	"TextObject.h"
 	"NumberOfPlayersLives.h"
+	"MenuGame.h"
 
 1672757820 c:\users\admin\mysource\sdl2\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -418,20 +419,20 @@
 	"begin_code.h"
 	"close_code.h"
 
-1679731464 source:c:\users\admin\mysource\firstgameoffical\src\commonfuntion.cpp
+1680943986 source:c:\users\admin\mysource\firstgameoffical\src\commonfuntion.cpp
 	"CommonFuntion.h"
 
-1680864431 c:\users\admin\mysource\firstgameoffical\include\commonfuntion.h
+1680943986 c:\users\admin\mysource\firstgameoffical\include\commonfuntion.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
 	<SDL_ttf.h>
 	<bits/stdc++.h>
 
-1679071892 source:c:\users\admin\mysource\firstgameoffical\src\baseobject.cpp
+1680944230 source:c:\users\admin\mysource\firstgameoffical\src\baseobject.cpp
 	"BaseObject.h"
 
-1680110826 c:\users\admin\mysource\firstgameoffical\include\baseobject.h
+1680944234 c:\users\admin\mysource\firstgameoffical\include\baseobject.h
 	"CommonFuntion.h"
 
 1680537068 source:c:\users\admin\mysource\firstgameoffical\src\game_map.cpp
@@ -442,15 +443,16 @@
 	"CommonFuntion.h"
 	"BaseObject.h"
 
-1680863268 c:\users\admin\mysource\firstgameoffical\include\playerobject.h
+1681403063 c:\users\admin\mysource\firstgameoffical\include\playerobject.h
 	"CommonFuntion.h"
 	"BaseObject.h"
 	"AttackObject.h"
 	"NumberOfPlayersLives.h"
 	<vector>
 
-1680865411 source:c:\users\admin\mysource\firstgameoffical\src\playerobject.cpp
+1681405868 source:c:\users\admin\mysource\firstgameoffical\src\playerobject.cpp
 	"PlayerObject.h"
+	"MenuGame.h"
 
 1678529397 c:\users\admin\mysource\firstgameoffical\include\timerfps.h
 
@@ -497,4 +499,19 @@
 
 1680861892 source:c:\users\admin\mysource\firstgameoffical\src\numberofplayerslives.cpp
 	"NumberOfPlayersLives.h"
+
+1680947185 c:\users\admin\mysource\firstgameoffical\include\showmenu.h
+	"BaseObject.h"
+	"TextObject.h"
+
+1680947952 source:c:\users\admin\mysource\firstgameoffical\src\showmenu.cpp
+	"ShowMenu.h"
+
+1681405825 c:\users\admin\mysource\firstgameoffical\include\menugame.h
+	"BaseObject.h"
+	"TextObject.h"
+	"MenuGame.h"
+
+1681405809 source:c:\users\admin\mysource\firstgameoffical\src\menugame.cpp
+	"MenuGame.h"
 

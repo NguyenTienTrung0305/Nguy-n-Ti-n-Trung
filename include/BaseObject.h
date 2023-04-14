@@ -16,6 +16,8 @@ class BaseObject
         void Render(SDL_Renderer* des , const SDL_Rect* clip = NULL);
         void Free();
 
+        int ShowMenu(SDL_Renderer* screen , TTF_Font* font);
+
     protected:
         SDL_Texture* p_object_;
         SDL_Rect rect_; // vi tri bin image

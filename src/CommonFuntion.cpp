@@ -45,3 +45,7 @@ bool SDLCommonFuncion::CheckCollision(const SDL_Rect& object1, const SDL_Rect& o
 
     return false;
 }
+
+
+
+

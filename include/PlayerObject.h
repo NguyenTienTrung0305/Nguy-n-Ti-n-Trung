@@ -58,6 +58,7 @@ class PlayerObject : public BaseObject
         void set_y_pos(const float& yPos){y_pos = yPos;}
 
         int num_die_ = 0;
+        bool is_die = false;
 
 
         // number of Player's Lives

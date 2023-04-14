@@ -6,6 +6,7 @@
 #include "MonsterThreadObject.h"
 #include "TextObject.h"
 #include "NumberOfPlayersLives.h"
+#include "MenuGame.h"
 
 
 using namespace std;
@@ -17,8 +18,13 @@ Mix_Music *gMusic3 = NULL;
 
 BaseObject baseobject;
 
+MenuGame menu_game;
+
 
 TTF_Font* font_time;
+TTF_Font* font2;
+TTF_Font* font4;
+
 
 
 
@@ -26,6 +32,7 @@ bool InitData(){
     bool success = true;
     int ret = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     if ( ret < 0 ) return false;
+
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY , "1");
 
@@ -35,7 +42,7 @@ bool InitData(){
         success = false;
     }
 
-    g_window = SDL_CreateWindow("Demo" , SDL_WINDOWPOS_UNDEFINED , SDL_WINDOWPOS_UNDEFINED , SCREEN_WIDTH , SCREEN_HEIGHT , false);
+    g_window = SDL_CreateWindow("RESCUE PRINCESS" , SDL_WINDOWPOS_UNDEFINED , SDL_WINDOWPOS_UNDEFINED , SCREEN_WIDTH , SCREEN_HEIGHT , false);
     if ( g_window == NULL){
         success = false;
     }else{
@@ -53,6 +60,8 @@ bool InitData(){
         }
 
         font_time = TTF_OpenFont("fonts//font3.ttf" , 15);
+        font2 = TTF_OpenFont("fonts//font3.ttf" , 40);
+        font4 = TTF_OpenFont("fonts//font4.ttf" , 40);
         if (font_time == NULL){
             success = false;
         }
@@ -88,7 +97,6 @@ bool LoadBackground(){
     if ( ret = false)return false;
     return true;
 }
-
 
 void Close(){
     baseobject.Free();
@@ -171,292 +179,303 @@ vector<MonsterThreadObject*> MakeThreadList(){
 
 
 int main(int argc , char* argv[]){
+
     if (InitData() == false) return -1;
 
-    if (!LoadMeida()) return -1;
-    if (LoadBackground() == false) return -1;
+    if ( menu_game.ShowMenu(g_screen , font2) == 1){
+        start:
+        if (!LoadMeida()) return -1;
+        if (LoadBackground() == false) return -1;
 
-    Timerfps timer_fbs;
-
-    GameMap game_map;
-    game_map.LoadMap("map/map01.dat");
-    game_map.LoadTiles(g_screen);
+        Timerfps timer_fbs;
 
 
-    PlayerObject p_player;
-    p_player.loadImage("assets//assassinrightrun.jpg" , g_screen);
-    p_player.Set_Clips();
-
-    p_player.InitPlayerLives(g_screen);
-
-    // number of player's lives
-    //NumberOfPlayersLives players_lives;
-    //players_lives.Init(g_screen); // khoi tao so mang cua nhanh vat
+        GameMap game_map;
+        game_map.LoadMap("map/map01.dat");
+        game_map.LoadTiles(g_screen);
 
 
-    vector<MonsterThreadObject*> list_ = MakeThreadList();
+        PlayerObject p_player;
+        p_player.loadImage("assets//assassinrightrun.jpg" , g_screen);
+        p_player.Set_Clips();
+
+        p_player.InitPlayerLives(g_screen);
+
+        // number of player's lives
+        //NumberOfPlayersLives players_lives;
+        //players_lives.Init(g_screen); // khoi tao so mang cua nhanh vat
 
 
-    // Text Time
-    TextObject time_game;
-    time_game.setColor(255 , 228 , 255);
+        vector<MonsterThreadObject*> list_ = MakeThreadList();
 
-    bool isQuit = false;
-    while (!isQuit){
-        timer_fbs.start();
-        while (SDL_PollEvent(&g_event) != 0 ){
-            if (g_event.type == SDL_QUIT){
-                isQuit = true;
-            }else if (g_event.type == SDL_KEYDOWN){
-                switch (g_event.key.keysym.sym){
-                    case SDLK_7:{
-                        Mix_HaltMusic();
-                        // if there is no music playing
-                        if (Mix_PlayingMusic() == 0){
-                            // play the music
-                            Mix_PlayMusic(gMusic1 , -1);
-                        }
-                        // if music is being played
-                        else{
-                            // if music is paused
-                            if (Mix_PausedMusic() == 1){
-                                // resume music
-                                Mix_ResumeMusic();
+
+        // Text Time
+        TextObject time_game;
+        time_game.setColor(255 , 228 , 255);
+
+        bool isQuit = false;
+        while (!isQuit){
+            timer_fbs.start();
+            while (SDL_PollEvent(&g_event) != 0 ){
+                if (g_event.type == SDL_QUIT){
+                    isQuit = true;
+                }else if (g_event.type == SDL_KEYDOWN){
+                    switch (g_event.key.keysym.sym){
+                        case SDLK_7:{
+                            Mix_HaltMusic();
+                            // if there is no music playing
+                            if (Mix_PlayingMusic() == 0){
+                                // play the music
+                                Mix_PlayMusic(gMusic1 , -1);
                             }
-                            // if music is playing
+                            // if music is being played
                             else{
-                                // pause the music
-                                Mix_PausedMusic();
+                                // if music is paused
+                                if (Mix_PausedMusic() == 1){
+                                    // resume music
+                                    Mix_ResumeMusic();
+                                }
+                                // if music is playing
+                                else{
+                                    // pause the music
+                                    Mix_PausedMusic();
+                                }
                             }
+                            break;
                         }
-                        break;
-                    }
-                    case SDLK_8:{
-                        Mix_HaltMusic();
-                        // if there is no music playing
-                        if (Mix_PlayingMusic() == 0){
-                            // play the music
-                            Mix_PlayMusic(gMusic2 , -1);
-                        }
-                        // if music is being played
-                        else{
-                            // if music is paused
-                            if (Mix_PausedMusic() == 1){
-                                // resume music
-                                Mix_ResumeMusic();
+                        case SDLK_8:{
+                            Mix_HaltMusic();
+                            // if there is no music playing
+                            if (Mix_PlayingMusic() == 0){
+                                // play the music
+                                Mix_PlayMusic(gMusic2 , -1);
                             }
-                            // if music is playing
+                            // if music is being played
                             else{
-                                // pause the music
-                                Mix_PausedMusic();
+                                // if music is paused
+                                if (Mix_PausedMusic() == 1){
+                                    // resume music
+                                    Mix_ResumeMusic();
+                                }
+                                // if music is playing
+                                else{
+                                    // pause the music
+                                    Mix_PausedMusic();
+                                }
                             }
+                            break;
                         }
-                        break;
-                    }
-                    case SDLK_9:{
-                        Mix_HaltMusic();
-                        // if there is no music playing
-                        if (Mix_PlayingMusic() == 0){
-                            // play the music
-                            Mix_PlayMusic(gMusic3 , -1);
-                        }
-                        // if music is being played
-                        else{
-                            // if music is paused
-                            if (Mix_PausedMusic() == 1){
-                                // resume music
-                                Mix_ResumeMusic();
+                        case SDLK_9:{
+                            Mix_HaltMusic();
+                            // if there is no music playing
+                            if (Mix_PlayingMusic() == 0){
+                                // play the music
+                                Mix_PlayMusic(gMusic3 , -1);
                             }
-                            // if music is playing
+                            // if music is being played
                             else{
-                                // pause the music
-                                Mix_PausedMusic();
+                                // if music is paused
+                                if (Mix_PausedMusic() == 1){
+                                    // resume music
+                                    Mix_ResumeMusic();
+                                }
+                                // if music is playing
+                                else{
+                                    // pause the music
+                                    Mix_PausedMusic();
+                                }
                             }
+                            break;
                         }
-                        break;
-                    }
-                    case SDLK_0:{
-                        // stop the music
-                        Mix_HaltMusic();
-                        break;
-                    }
-                }
-            }
-
-
-            p_player.HandelInputAction(g_event , g_screen);
-        }
-
-        SDL_SetRenderDrawColor(g_screen ,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR );
-        SDL_RenderClear(g_screen);
-
-        baseobject.Render(g_screen , NULL);
-
-
-        Map map_data = game_map.getMap();
-
-        p_player.setMapXY(map_data.start_x_ , map_data.start_y_);
-        p_player.DoPlayer(map_data);
-
-
-
-        game_map.SetMap(map_data); // cap nhat lai map
-        game_map.DrawMap(g_screen); // ve lai map
-
-        p_player.HandleAttack(g_screen); // show image attack
-        p_player.Show(g_screen); // show player
-
-        float x_player = p_player.getRect().x;
-
-        //number of player's lives
-        p_player.ShowPlayerLives(g_screen);
-
-
-        // monster
-        for ( int i = 0 ; i < list_.size() ; i++){
-            MonsterThreadObject* p_thread = list_.at(i);
-            if ( p_thread != NULL){
-                p_thread->setMap(map_data.start_x_ , map_data.start_y_);
-                p_thread->HandleMove(g_screen , map_data);
-                p_thread->MakeBullet(g_screen , SCREEN_WIDTH, SCREEN_HEIGHT , x_player);
-                p_thread->HandleStateHp(g_screen);
-                p_thread->DoPlayer(map_data);
-                p_thread->Show(g_screen);
-
-
-                // lay ra vi tri cua player
-                SDL_Rect rect_player;
-                rect_player.x = p_player.getRect().x;
-                rect_player.y = p_player.getRect().y;
-                rect_player.w = p_player.getRect().w /7;
-                rect_player.h = p_player.getRect().h;
-
-
-                // check va chạm player với attack enemy
-                bool check1 = false;
-                vector<AttackObject* > p_list_attack = p_thread->get_bullet_list();
-                for ( int j = 0 ; j < p_list_attack.size() ; j++){
-                    AttackObject* p_attack = p_list_attack.at(j);
-                    if (p_attack){
-                        check1 = SDLCommonFuncion::CheckCollision(p_attack->getRect() , rect_player);
-                        if (check1){
-                            p_thread->RemoveAttack(j);
-                            AttackObject* p_attack = new AttackObject();
-                            p_thread->InitBullet(p_attack , g_screen);
+                        case SDLK_0:{
+                            // stop the music
+                            Mix_HaltMusic();
                             break;
                         }
                     }
                 }
 
 
-                // check va cham player voi enemy
-                SDL_Rect rect_thread;
-                rect_thread.x = p_thread->getRect().x;
-                rect_thread.y = p_thread->getRect().y;
-                rect_thread.w = p_thread->getRect().w/9;
-                rect_thread.h = p_thread->getRect().h;
-
-
-                bool check2 = SDLCommonFuncion::CheckCollision(rect_player , rect_thread);
-                if ( check1 || check2){
-                    p_player.num_die_++;
-                    if ( p_player.num_die_ <= 5){
-                        p_player.die_ = Mix_LoadWAV("music//die.wav");
-                        Mix_PlayChannel(-1 , p_player.die_ , 0);
-                        p_player.set_y_pos(641);
-                        p_player.set_time_comeback(50);
-
-                        p_player.DecreaseNumber();
-                        continue;
-                    }else{
-                       p_thread->Free();
-                       Close();
-                       SDL_Quit();
-                       return 0;
-                    }
-                }
-
+                p_player.HandelInputAction(g_event , g_screen);
             }
-        }
+
+            SDL_SetRenderDrawColor(g_screen ,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR );
+            SDL_RenderClear(g_screen);
+
+            baseobject.Render(g_screen , NULL);
 
 
-        vector<AttackObject* > attack_arr  = p_player.get_attack_list();
-        for ( int i = 0 ; i < attack_arr.size() ; i++){
-            AttackObject* p_attack = attack_arr.at(i);
-            if (p_attack!= NULL){
-                for ( int j = 0 ; j < list_.size() ; j++){
-                    MonsterThreadObject* obj_monster = list_.at(j);
-                    if (obj_monster != NULL){
+            Map map_data = game_map.getMap();
 
-                        // rect monster
-                        SDL_Rect mRect;
-                        mRect.x = obj_monster->getRect().x;
-                        mRect.y = obj_monster->getRect().y;
-                        mRect.w = obj_monster->get_width_frame();
-                        mRect.h = obj_monster->get_height_frame();
-
-                        // rect attack
-                        SDL_Rect attackRect = p_attack->getRect();
+            p_player.setMapXY(map_data.start_x_ , map_data.start_y_);
+            p_player.DoPlayer(map_data);
 
 
-                        bool check = SDLCommonFuncion::CheckCollision(attackRect , mRect);
 
-                        if ( check){
-                            p_player.RemoveAttack(i);
-                            int x =  obj_monster->get_times_beaten();
-                            x++;
-                            obj_monster->set_times_beaten(x);
+            game_map.SetMap(map_data); // cap nhat lai map
+            game_map.DrawMap(g_screen); // ve lai map
 
-                            vector<StateHp*> list_state = obj_monster->get_list_state_hp();
-                            for ( int i = 0; i < list_state.size() ; i++){
-                                StateHp* p_state = list_state.at(i);
-                                obj_monster->InitState(p_state , g_screen , x);
-                            }
+            p_player.HandleAttack(g_screen); // show image attack
+            p_player.Show(g_screen); // show player
 
-                            if (x >= 4){
-                                obj_monster->Free();
-                                list_.erase(list_.begin() + j);
+            float x_player = p_player.getRect().x;
+
+            //number of player's lives
+            p_player.ShowPlayerLives(g_screen);
+
+
+            // monster
+            for ( int i = 0 ; i < list_.size() ; i++){
+                MonsterThreadObject* p_thread = list_.at(i);
+                if ( p_thread != NULL){
+                    p_thread->setMap(map_data.start_x_ , map_data.start_y_);
+                    p_thread->HandleMove(g_screen , map_data);
+                    p_thread->MakeBullet(g_screen , SCREEN_WIDTH, SCREEN_HEIGHT , x_player);
+                    p_thread->HandleStateHp(g_screen);
+                    p_thread->DoPlayer(map_data);
+                    p_thread->Show(g_screen);
+
+
+                    // lay ra vi tri cua player
+                    SDL_Rect rect_player;
+                    rect_player.x = p_player.getRect().x;
+                    rect_player.y = p_player.getRect().y;
+                    rect_player.w = p_player.getRect().w /7;
+                    rect_player.h = p_player.getRect().h;
+
+
+                    // check va chạm player với attack enemy
+                    bool check1 = false;
+                    vector<AttackObject* > p_list_attack = p_thread->get_bullet_list();
+                    for ( int j = 0 ; j < p_list_attack.size() ; j++){
+                        AttackObject* p_attack = p_list_attack.at(j);
+                        if (p_attack){
+                            check1 = SDLCommonFuncion::CheckCollision(p_attack->getRect() , rect_player);
+                            if (check1){
+                                p_thread->RemoveAttack(j);
+                                AttackObject* p_attack = new AttackObject();
+                                p_thread->InitBullet(p_attack , g_screen);
+                                break;
                             }
                         }
+                    }
 
+
+                    // check va cham player voi enemy
+                    SDL_Rect rect_thread;
+                    rect_thread.x = p_thread->getRect().x;
+                    rect_thread.y = p_thread->getRect().y;
+                    rect_thread.w = p_thread->getRect().w/9;
+                    rect_thread.h = p_thread->getRect().h;
+
+
+                    bool check2 = SDLCommonFuncion::CheckCollision(rect_player , rect_thread);
+                    if ( check1 || check2){
+                        p_player.num_die_++;
+                        if ( p_player.num_die_ <= 5){
+                            p_player.die_ = Mix_LoadWAV("music//die.wav");
+                            Mix_PlayChannel(-1 , p_player.die_ , 0);
+                            p_player.set_y_pos(641);
+                            p_player.set_time_comeback(50);
+
+                            p_player.DecreaseNumber();
+                            continue;
+                        }else{
+                            p_player.num_die_ = 0;
+                            if (menu_game.ShowMenuWinnerAndLose(g_screen , font4) == 1){
+                                goto start;
+                            }
+                            p_thread->Free();
+                            Close();
+                            SDL_Quit();
+                            return 0;
+                        }
+                    }
+
+                }
+            }
+
+
+            vector<AttackObject* > attack_arr  = p_player.get_attack_list();
+            for ( int i = 0 ; i < attack_arr.size() ; i++){
+                AttackObject* p_attack = attack_arr.at(i);
+                if (p_attack!= NULL){
+                    for ( int j = 0 ; j < list_.size() ; j++){
+                        MonsterThreadObject* obj_monster = list_.at(j);
+                        if (obj_monster != NULL){
+
+                            // rect monster
+                            SDL_Rect mRect;
+                            mRect.x = obj_monster->getRect().x;
+                            mRect.y = obj_monster->getRect().y;
+                            mRect.w = obj_monster->get_width_frame();
+                            mRect.h = obj_monster->get_height_frame();
+
+                            // rect attack
+                            SDL_Rect attackRect = p_attack->getRect();
+
+
+                            bool check = SDLCommonFuncion::CheckCollision(attackRect , mRect);
+
+                            if ( check){
+                                p_player.RemoveAttack(i);
+                                int x =  obj_monster->get_times_beaten();
+                                x++;
+                                obj_monster->set_times_beaten(x);
+
+                                vector<StateHp*> list_state = obj_monster->get_list_state_hp();
+                                for ( int i = 0; i < list_state.size() ; i++){
+                                    StateHp* p_state = list_state.at(i);
+                                    obj_monster->InitState(p_state , g_screen , x);
+                                }
+
+                                if (x >= 4){
+                                    obj_monster->Free();
+                                    list_.erase(list_.begin() + j);
+                                }
+                            }
+
+                        }
                     }
                 }
             }
+
+
+            // show time
+            std::string str_time = "Time: ";
+            Uint32 time_val = SDL_GetTicks() / 1000; // thoi diem hien tai
+            std::string char_sequance = std::to_string(time_val);
+            str_time += char_sequance;
+            time_game.setText(str_time);
+            time_game.LoadFromRenderText(font_time , g_screen);
+            time_game.RenderText(g_screen , SCREEN_WIDTH - 120 , 15 );
+
+
+
+            SDL_RenderPresent(g_screen);
+
+            int real_int_time = timer_fbs.get_tick(); // thoi gian thuc te chay het 1 frame
+            int one_frame_run_howlong = 1000 / FRAME_PER_SECOND; // ms
+            if(real_int_time < one_frame_run_howlong){
+                int delay_time = one_frame_run_howlong - real_int_time;
+                if ( delay_time >= 0 ) SDL_Delay(delay_time);
+            }
         }
 
-
-        // show time
-        std::string str_time = "Time: ";
-        Uint32 time_val = SDL_GetTicks() / 1000; // thoi diem hien tai
-        std::string char_sequance = std::to_string(time_val);
-        str_time += char_sequance;
-        time_game.setText(str_time);
-        time_game.LoadFromRenderText(font_time , g_screen);
-        time_game.RenderText(g_screen , SCREEN_WIDTH - 120 , 15 );
-
-
-
-        SDL_RenderPresent(g_screen);
-
-        int real_int_time = timer_fbs.get_tick(); // thoi gian thuc te chay het 1 frame
-        int one_frame_run_howlong = 1000 / FRAME_PER_SECOND; // ms
-        if(real_int_time < one_frame_run_howlong){
-            int delay_time = one_frame_run_howlong - real_int_time;
-            if ( delay_time >= 0 ) SDL_Delay(delay_time);
+        for ( int i = 0 ; i <list_.size() ; i++){
+            MonsterThreadObject* p_thread = list_.at(i);
+            if (p_thread){
+                p_thread->Free();
+                p_thread = NULL;
+            }
         }
+        list_.clear();
+
+        Close();
+        return 0;
+    }else {
+        return 0;
     }
-
-    for ( int i = 0 ; i <list_.size() ; i++){
-        MonsterThreadObject* p_thread = list_.at(i);
-        if (p_thread){
-            p_thread->Free();
-            p_thread = NULL;
-        }
-    }
-    list_.clear();
-
-    Close();
-    return 0;
 }
 
 
