@@ -60,6 +60,8 @@ class PlayerObject : public BaseObject
         int num_die_ = 0;
         bool is_die = false;
 
+        bool is_winner = false;
+
 
         // number of Player's Lives
         void InitPlayerLives(SDL_Renderer* screen);

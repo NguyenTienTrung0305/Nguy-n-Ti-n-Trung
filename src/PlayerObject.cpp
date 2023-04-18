@@ -250,13 +250,7 @@ void PlayerObject::CheckToMap(Map& map_data){
 
         // winner
         if (map_data.tile[y1][x2] == PRINCESS || map_data.tile[y2][x2] == PRINCESS || map_data.tile[y1][x1] == PRINCESS || map_data.tile[y2][x1] == PRINCESS){
-            Free();
-            SDL_DestroyRenderer(g_screen);
-            g_screen = NULL;
-            SDL_DestroyWindow(g_window);
-            g_window = NULL;
-            IMG_Quit();
-            SDL_Quit();
+            is_winner = true;
         }
         // moving to right
         if ( x_val_ > 0){
@@ -325,7 +319,7 @@ void PlayerObject::CheckToMap(Map& map_data){
     if (y_pos > map_data.max_y){
         num_die_ += 1;
         players_lives.DecreaseNumber();
-        if (num_die_ > 5){
+        /*if (num_die_ > 5){
             Free();
             SDL_DestroyRenderer(g_screen);
             g_screen = NULL;
@@ -334,6 +328,7 @@ void PlayerObject::CheckToMap(Map& map_data){
             IMG_Quit();
             SDL_Quit();
         }
+        */
         die_ = Mix_LoadWAV("music//die.wav");
         Mix_PlayChannel(-1 , die_ , 0);
         time_come_back = 60;

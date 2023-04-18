@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1681403761 source:c:\users\admin\mysource\firstgameoffical\main.cpp
+1681816059 source:c:\users\admin\mysource\firstgameoffical\main.cpp
 	"CommonFuntion.h"
 	"BaseObject.h"
 	"game_map.h"
@@ -429,7 +429,7 @@
 	<SDL_ttf.h>
 	<bits/stdc++.h>
 
-1680944230 source:c:\users\admin\mysource\firstgameoffical\src\baseobject.cpp
+1681467303 source:c:\users\admin\mysource\firstgameoffical\src\baseobject.cpp
 	"BaseObject.h"
 
 1680944234 c:\users\admin\mysource\firstgameoffical\include\baseobject.h

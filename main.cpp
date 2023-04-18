@@ -395,6 +395,29 @@ int main(int argc , char* argv[]){
                 }
             }
 
+            // check winner || failed
+            if (p_player.num_die_ >5){
+                p_player.num_die_ = 0;
+                if (menu_game.ShowMenuWinnerAndLose(g_screen , font4) == 1){
+                    goto start;
+                }else{
+                    Close();
+                    SDL_Quit();
+                    return 0;
+                }
+            }
+
+            if (p_player.is_winner == true){
+                p_player.is_die = false;
+                if (menu_game.ShowMenuRescueComplete(g_screen , font4) == 1){
+                    goto start;
+                }else{
+                    Close();
+                    SDL_Quit();
+                    return 0;
+                }
+            }
+
 
             vector<AttackObject* > attack_arr  = p_player.get_attack_list();
             for ( int i = 0 ; i < attack_arr.size() ; i++){

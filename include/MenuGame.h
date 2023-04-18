@@ -12,7 +12,7 @@ class MenuGame : BaseObject
 
         int ShowMenu(SDL_Renderer* screen , TTF_Font* font);
         int ShowMenuWinnerAndLose(SDL_Renderer* screen , TTF_Font* font);
-
+        int ShowMenuRescueComplete(SDL_Renderer* screen , TTF_Font* font);
 
     protected:
 
