@@ -1,12 +1,13 @@
 # rescue-princess
 ## Name Game : Rescue Princess
 ## Description : 
-	*Đánh bại hết quái vật trên đường đi để giải cứu công chúa*
+	*Đánh bại hết quái vật và boss trên đường đi để giải cứu công chúa*
 ## How to play :
  	1. Ấn chuột trái để tấn công , ấn nút lên để nhảy , nút sang phải để đi sang phải , nút sang trái để đi sang trái
  	2. Tránh va chạm với quái vật hoặc đạn của quái vật nếu không sẽ bị mất mạng
  	3. Cố gắng không để rơi xuống vực thẳm nếu không sẽ mất mạng
  	4. Ăn item hp để được thêm mạng
+	5. Ăn item weapon để đổi weapon mạnh hơn
 	
 ## How to install :
 1. Tải SDL_2 , SDL_Image , SDL_mixer , SDL_font
