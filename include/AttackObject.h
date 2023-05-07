@@ -18,6 +18,7 @@ class AttackObject : public BaseObject
         enum AttackType{
             KNIFE = 0 ,
             GATTINGGUN = 1,
+            FIREBALL = 2,
         };
 
         void set_x_val(const int& xVal){x_val_ = xVal;}

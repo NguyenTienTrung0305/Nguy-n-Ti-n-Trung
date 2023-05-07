@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1681816059 source:c:\users\admin\mysource\firstgameoffical\main.cpp
+1683452451 source:c:\users\admin\mysource\firstgameoffical\main.cpp
 	"CommonFuntion.h"
 	"BaseObject.h"
 	"game_map.h"
@@ -422,7 +422,7 @@
 1680943986 source:c:\users\admin\mysource\firstgameoffical\src\commonfuntion.cpp
 	"CommonFuntion.h"
 
-1680943986 c:\users\admin\mysource\firstgameoffical\include\commonfuntion.h
+1683367141 c:\users\admin\mysource\firstgameoffical\include\commonfuntion.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
@@ -443,14 +443,14 @@
 	"CommonFuntion.h"
 	"BaseObject.h"
 
-1681403063 c:\users\admin\mysource\firstgameoffical\include\playerobject.h
+1683363234 c:\users\admin\mysource\firstgameoffical\include\playerobject.h
 	"CommonFuntion.h"
 	"BaseObject.h"
 	"AttackObject.h"
 	"NumberOfPlayersLives.h"
 	<vector>
 
-1681405868 source:c:\users\admin\mysource\firstgameoffical\src\playerobject.cpp
+1683366091 source:c:\users\admin\mysource\firstgameoffical\src\playerobject.cpp
 	"PlayerObject.h"
 	"MenuGame.h"
 
@@ -460,16 +460,16 @@
 	"Timerfps.h"
 	"CommonFuntion.h"
 
-1679913213 c:\users\admin\mysource\firstgameoffical\include\attackobject.h
+1683450885 c:\users\admin\mysource\firstgameoffical\include\attackobject.h
 	"BaseObject.h"
 
-1679913216 source:c:\users\admin\mysource\firstgameoffical\src\attackobject.cpp
+1683450931 source:c:\users\admin\mysource\firstgameoffical\src\attackobject.cpp
 	"AttackObject.h"
 
-1680708780 source:c:\users\admin\mysource\firstgameoffical\src\monsterthreadobject.cpp
+1683450732 source:c:\users\admin\mysource\firstgameoffical\src\monsterthreadobject.cpp
 	"MonsterThreadObject.h"
 
-1680688771 c:\users\admin\mysource\firstgameoffical\include\monsterthreadobject.h
+1683450769 c:\users\admin\mysource\firstgameoffical\include\monsterthreadobject.h
 	"CommonFuntion.h"
 	"BaseObject.h"
 	"AttackObject.h"
@@ -481,10 +481,10 @@
 1679896782 c:\users\admin\mysource\firstgameoffical\include\displayhp.h
 	"BaseObject.h"
 
-1680014911 c:\users\admin\mysource\firstgameoffical\include\statehp.h
+1683397602 c:\users\admin\mysource\firstgameoffical\include\statehp.h
 	"BaseObject.h"
 
-1680015113 source:c:\users\admin\mysource\firstgameoffical\src\statehp.cpp
+1683452466 source:c:\users\admin\mysource\firstgameoffical\src\statehp.cpp
 	"StateHp.h"
 
 1680714869 source:c:\users\admin\mysource\firstgameoffical\src\textobject.cpp
@@ -507,11 +507,11 @@
 1680947952 source:c:\users\admin\mysource\firstgameoffical\src\showmenu.cpp
 	"ShowMenu.h"
 
-1681405825 c:\users\admin\mysource\firstgameoffical\include\menugame.h
+1681821649 c:\users\admin\mysource\firstgameoffical\include\menugame.h
 	"BaseObject.h"
 	"TextObject.h"
 	"MenuGame.h"
 
-1681405809 source:c:\users\admin\mysource\firstgameoffical\src\menugame.cpp
+1681821854 source:c:\users\admin\mysource\firstgameoffical\src\menugame.cpp
 	"MenuGame.h"
 

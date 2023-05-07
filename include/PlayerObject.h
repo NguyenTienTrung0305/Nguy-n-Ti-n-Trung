@@ -19,6 +19,12 @@ class PlayerObject : public BaseObject
         PlayerObject();
         virtual ~PlayerObject();
 
+        enum Weapon{
+            STKNIFE = 0,
+            STSWORD = 1,
+            STLIGHTNING = 2,
+        };
+
         enum WalkType{
             FREE_FALL = 0 ,
             WALK_RIGHT = 1 ,
@@ -70,6 +76,14 @@ class PlayerObject : public BaseObject
         void DecreaseNumber();
         void IncreaseNumber();
 
+        // get type_weapon
+        int get_type_weapon(){
+            return type_weapon;
+        }
+        void set_type_weapon(int typeWeapon){
+            type_weapon = typeWeapon;
+        }
+
     protected:
 
     private:
@@ -107,6 +121,8 @@ class PlayerObject : public BaseObject
         Mix_Chunk* throwknife_;
 
         NumberOfPlayersLives players_lives;
+
+        int type_weapon; // type weapon
 
 };
 

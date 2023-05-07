@@ -17,6 +17,8 @@ bool AttackObject::LoadImageAttack(SDL_Renderer* screen){
     bool ret = false;
     if (attack_type == GATTINGGUN){
         ret = loadImage("assets//bulletgatting.png" , screen);
+    }else if ( attack_type == FIREBALL){
+        ret = loadImage("assets//fireball.jpg" , screen);
     }
     return ret;
 }

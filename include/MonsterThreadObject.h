@@ -23,6 +23,11 @@ class MonsterThreadObject : public BaseObject
             MOVE = 1,
         };
 
+        enum TypeMonster{
+            BOSS = 0,
+            SOLDIER = 1,
+        };
+
 
         void set_x_val(float xVal){x_val_ = xVal;}
         void set_y_val(float yVal){y_val_ = yVal;}
@@ -62,7 +67,7 @@ class MonsterThreadObject : public BaseObject
         std::vector<AttackObject*> get_bullet_list() const {return bullet_list_;}
         void set_bullet_list(const std::vector<AttackObject*> bulletList){bullet_list_ = bulletList;}
 
-        void InitBullet(AttackObject* p_bullet , SDL_Renderer* screen);
+        void InitBullet(AttackObject* p_bullet , SDL_Renderer* screen , int type_attack);
         // tầm bắn
         void MakeBullet(SDL_Renderer* screen , const int& x_bounded , const int& y_bounded , const float& x_player);
 
@@ -79,7 +84,15 @@ class MonsterThreadObject : public BaseObject
         void InitState(StateHp* p_state , SDL_Renderer* screen , const int& state_hp);
         void HandleStateHp(SDL_Renderer* screen);
 
+        // boss
+        void InitStateBoss(StateHp* p_state , SDL_Renderer* screen , const int& state);
+        void HandleStateHpBoss(SDL_Renderer* screen);
 
+        // type monster
+        void set_type_monster(int typeMonster){
+            type_monster = typeMonster;
+        }
+        int get_type_monster(){return type_monster;}
 
     protected:
 
@@ -108,6 +121,9 @@ class MonsterThreadObject : public BaseObject
 
         // số lần bị tấn công
         int times_beaten;
+
+        // type monster
+        int type_monster;
 
         // xu ly tan cong
         std::vector<AttackObject*> bullet_list_;

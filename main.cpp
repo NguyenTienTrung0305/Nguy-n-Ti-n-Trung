@@ -125,8 +125,8 @@ void Close(){
 vector<MonsterThreadObject*> MakeThreadList(){
     vector<MonsterThreadObject*> list_threads;
     // monster move
-    MonsterThreadObject* monster_move_1 = new MonsterThreadObject[40];
-    for ( int i = 0 ; i < 40 ; i++){
+    MonsterThreadObject* monster_move_1 = new MonsterThreadObject[MSMOVE];
+    for ( int i = 0 ; i < MSMOVE ; i++){
         MonsterThreadObject* monster1 = (monster_move_1+i);
         if ( monster1 != NULL){
             monster1->loadImage("assets//slimemonster.jpg" , g_screen);
@@ -135,6 +135,7 @@ vector<MonsterThreadObject*> MakeThreadList(){
             monster1->set_type_move(MonsterThreadObject::MOVE);
             monster1->set_x_pos(500 + 603*i);
             monster1->set_y_pos(200);
+            monster1->set_type_monster(MonsterThreadObject::SOLDIER);
 
             int boundedleft = monster1->get_x_pos() - 60;
             int boundedright = monster1->get_x_pos() + 60;
@@ -149,8 +150,8 @@ vector<MonsterThreadObject*> MakeThreadList(){
     }
 
     // monster stand still
-    MonsterThreadObject* thread_objs = new MonsterThreadObject[21];
-    for ( int i =0 ; i < 21 ; i++){
+    MonsterThreadObject* thread_objs = new MonsterThreadObject[MSSTANDSTILL];
+    for ( int i =0 ; i < MSSTANDSTILL ; i++){
         MonsterThreadObject* p_thread = (thread_objs + i);
         if ( p_thread != NULL){
             p_thread->loadImage("assets//monster.jpg" , g_screen);
@@ -160,10 +161,11 @@ vector<MonsterThreadObject*> MakeThreadList(){
 
             p_thread->set_x_pos(760+ i*1190);
             p_thread->set_y_pos(250);
+            p_thread->set_type_monster(MonsterThreadObject::SOLDIER);
 
 
             AttackObject* p_bullet = new AttackObject();
-            p_thread->InitBullet(p_bullet , g_screen);
+            p_thread->InitBullet(p_bullet , g_screen , AttackObject::GATTINGGUN);
 
             StateHp* p_state = new StateHp();
             p_thread->InitState(p_state , g_screen , 0);
@@ -172,6 +174,28 @@ vector<MonsterThreadObject*> MakeThreadList(){
             list_threads.push_back(p_thread);
         }
     }
+
+    // boss
+    MonsterThreadObject* boss = new MonsterThreadObject();
+    if ( boss != NULL){
+        boss->loadImage("assets//boss.png" , g_screen);
+        boss->set_clip();
+        boss->set_type_move(MonsterThreadObject::STAND_STILL);
+        boss->set_input_left(0);
+        boss->set_y_pos(300);
+        boss->set_x_pos(24700);
+        boss->set_type_monster(MonsterThreadObject::BOSS);
+
+        AttackObject* p_bullet = new AttackObject();
+        boss->InitBullet(p_bullet , g_screen , AttackObject::FIREBALL);
+
+        StateHp* p_state = new StateHp();
+        boss->InitStateBoss(p_state , g_screen  , 15);
+
+        list_threads.push_back(boss);
+    }
+
+
     return list_threads;
 }
 
@@ -331,7 +355,8 @@ int main(int argc , char* argv[]){
                     p_thread->setMap(map_data.start_x_ , map_data.start_y_);
                     p_thread->HandleMove(g_screen , map_data);
                     p_thread->MakeBullet(g_screen , SCREEN_WIDTH, SCREEN_HEIGHT , x_player);
-                    p_thread->HandleStateHp(g_screen);
+                    if ( p_thread->get_type_monster() == MonsterThreadObject::SOLDIER) p_thread->HandleStateHp(g_screen);
+                    else if ( p_thread->get_type_monster() == MonsterThreadObject::BOSS) p_thread->HandleStateHpBoss(g_screen);
                     p_thread->DoPlayer(map_data);
                     p_thread->Show(g_screen);
 
@@ -354,7 +379,11 @@ int main(int argc , char* argv[]){
                             if (check1){
                                 p_thread->RemoveAttack(j);
                                 AttackObject* p_attack = new AttackObject();
-                                p_thread->InitBullet(p_attack , g_screen);
+                                if (p_thread->get_type_monster() == MonsterThreadObject::SOLDIER){
+                                    p_thread->InitBullet(p_attack , g_screen , AttackObject::GATTINGGUN);
+                                }else if (p_thread->get_type_monster() == MonsterThreadObject::BOSS){
+                                     p_thread->InitBullet(p_attack , g_screen , AttackObject::FIREBALL);
+                                }
                                 break;
                             }
                         }
@@ -377,7 +406,7 @@ int main(int argc , char* argv[]){
                             Mix_PlayChannel(-1 , p_player.die_ , 0);
                             p_player.set_y_pos(641);
                             p_player.set_time_comeback(50);
-
+                            p_player.set_type_weapon(PlayerObject::STKNIFE);
                             p_player.DecreaseNumber();
                             continue;
                         }else{
@@ -419,6 +448,8 @@ int main(int argc , char* argv[]){
             }
 
 
+            // collide weapon
+
             vector<AttackObject* > attack_arr  = p_player.get_attack_list();
             for ( int i = 0 ; i < attack_arr.size() ; i++){
                 AttackObject* p_attack = attack_arr.at(i);
@@ -440,24 +471,43 @@ int main(int argc , char* argv[]){
 
                             bool check = SDLCommonFuncion::CheckCollision(attackRect , mRect);
 
+                            vector<StateHp*> list_state = obj_monster->get_list_state_hp();
+
                             if ( check){
                                 p_player.RemoveAttack(i);
                                 int x =  obj_monster->get_times_beaten();
-                                x++;
+
+                                if ( p_player.get_type_weapon() == PlayerObject::STKNIFE) x++;
+                                else if ( p_player.get_type_weapon() == PlayerObject::STSWORD ) x+=2;
+                                else if (p_player.get_type_weapon() == PlayerObject::STLIGHTNING ) x+=3;
+
                                 obj_monster->set_times_beaten(x);
 
-                                vector<StateHp*> list_state = obj_monster->get_list_state_hp();
+
                                 for ( int i = 0; i < list_state.size() ; i++){
                                     StateHp* p_state = list_state.at(i);
-                                    obj_monster->InitState(p_state , g_screen , x);
+                                    if (obj_monster->get_type_monster() == MonsterThreadObject::SOLDIER){
+                                            obj_monster->InitState(p_state , g_screen , x);
+                                    }
+                                    else if ( obj_monster->get_type_monster() == MonsterThreadObject::BOSS){
+                                        obj_monster->InitStateBoss(p_state , g_screen , 15 -x);
+                                    }
                                 }
-
-                                if (x >= 4){
-                                    obj_monster->Free();
-                                    list_.erase(list_.begin() + j);
+                                if (obj_monster->get_type_monster() == MonsterThreadObject::SOLDIER){
+                                    if (x >= 4){
+                                        obj_monster->Free();
+                                        list_.erase(list_.begin() + j);
+                                        list_state.clear();
+                                    }
+                                }
+                                else if ( obj_monster->get_type_monster() == MonsterThreadObject::BOSS){
+                                    if ( 15 - x < 0){
+                                        obj_monster->Free();
+                                        list_.erase(list_.begin() + j);
+                                        list_state.clear();
+                                    }
                                 }
                             }
-
                         }
                     }
                 }

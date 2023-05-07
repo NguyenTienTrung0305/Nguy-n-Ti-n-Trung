@@ -22,6 +22,8 @@ MonsterThreadObject::MonsterThreadObject()
     type_move_ = STAND_STILL;
 
     times_beaten = 0;
+
+    type_monster = SOLDIER;
 }
 
 MonsterThreadObject::~MonsterThreadObject()
@@ -127,16 +129,20 @@ void MonsterThreadObject::CheckToMap(Map& map_data){
     if ( x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_y){
         // moving to right
         if ( x_val_ > 0){
-            if ((map_data.tile[y1][x2] > 0 && map_data.tile[y1][x2] < 20 && map_data.tile[y1][x2] != HP)
-                ||(map_data.tile[y2][x2] > 0 && map_data.tile[y2][x2] < 20 && map_data.tile[y2][x2] != HP)){
+            if ((map_data.tile[y1][x2] > 0 && map_data.tile[y1][x2] < 20 && map_data.tile[y1][x2] != HP
+                 && map_data.tile[y1][x2] != SWORD && map_data.tile[y1][x2] != LIGHTNING)
+                ||(map_data.tile[y2][x2] > 0 && map_data.tile[y2][x2] < 20 && map_data.tile[y2][x2] != HP
+                   && map_data.tile[y2][x2] != SWORD && map_data.tile[y2][x2] != LIGHTNING)){
 
                 x_pos = x2*TILE_SIZE;
                 x_pos -= (width_frame_ +1) ; // vi tri bat dau cua nhat vat bang vi tri cu cong them luong di chuyen
                 x_val_ = 0;  // de khi gap chuong ngai vat du co an tiep cung khong di chuyen duoc
             }
         }else if (x_val_ < 0){
-            if ((map_data.tile[y1][x1] > 0 && map_data.tile[y1][x1] < 20 && map_data.tile[y1][x1] != HP)
-                || (map_data.tile[y2][x1] > 0 && map_data.tile[y2][x1] < 20 && map_data.tile[y2][x1] != HP )){
+            if ((map_data.tile[y1][x1] > 0 && map_data.tile[y1][x1] < 20 && map_data.tile[y1][x1] != HP
+                 && map_data.tile[y1][x1] != SWORD && map_data.tile[y1][x1] != LIGHTNING )
+                || (map_data.tile[y2][x1] > 0 && map_data.tile[y2][x1] < 20 && map_data.tile[y2][x1] != HP
+                    && map_data.tile[y2][x1] != SWORD && map_data.tile[y2][x1] != LIGHTNING )){
 
                 x_pos = (x1+1)*TILE_SIZE;
                 x_val_ = 0;
@@ -159,8 +165,10 @@ void MonsterThreadObject::CheckToMap(Map& map_data){
 
     if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_y){
         if (y_val_ > 0){
-            if ( (map_data.tile[y2][x1] > 0 && map_data.tile[y2][x1] < 20 && map_data.tile[y2][x1] != HP )
-                || (map_data.tile[y2][x2] > 0 && map_data.tile[y2][x2] < 20 && map_data.tile[y2][x2] != HP)){
+            if ( (map_data.tile[y2][x1] > 0 && map_data.tile[y2][x1] < 20 && map_data.tile[y2][x1] != HP
+                 && map_data.tile[y2][x1] != SWORD && map_data.tile[y2][x1] != LIGHTNING  )
+                || (map_data.tile[y2][x2] > 0 && map_data.tile[y2][x2] < 20 && map_data.tile[y2][x2] != HP
+                    && map_data.tile[y2][x2] != SWORD && map_data.tile[y2][x2] != LIGHTNING)){
                 y_pos = y2 * TILE_SIZE;
                 y_pos -= (height_frame_ +1);
                 y_val_ = 0;
@@ -168,8 +176,10 @@ void MonsterThreadObject::CheckToMap(Map& map_data){
             }
         }else if ( y_val_ < 0){
             //on_ground = false;
-            if ( (map_data.tile[y1][x1] > 0 && map_data.tile[y1][x1] < 20 && map_data.tile[y1][x1] != HP )
-                || (map_data.tile[y1][x2] > 0 && map_data.tile[y1][x2] < 20 && map_data.tile[y1][x2] != HP)){
+            if ( (map_data.tile[y1][x1] > 0 && map_data.tile[y1][x1] < 20 && map_data.tile[y1][x1] != HP
+                  && map_data.tile[y1][x1] != SWORD && map_data.tile[y1][x1] != LIGHTNING)
+                || (map_data.tile[y1][x2] > 0 && map_data.tile[y1][x2] < 20 && map_data.tile[y1][x2] != HP
+                    && map_data.tile[y1][x2] != SWORD && map_data.tile[y1][x2] != LIGHTNING)){
                 y_pos = (y1+1)*TILE_SIZE;
                 y_val_ = 0;
             }
@@ -211,14 +221,26 @@ void MonsterThreadObject::HandleMove(SDL_Renderer* screen , Map &map_data){
     y2 = (y_pos + height_min -1)/ TILE_SIZE;
     if (type_move_ == MOVE){
             if ( x_pos > bounded_right_move
-                || (map_data.tile[y1][x2] > 0 && map_data.tile[y1][x2] < 20 && map_data.tile[y1][x2] != HP)
-                ||(map_data.tile[y2][x2] > 0 && map_data.tile[y2][x2] < 20 && map_data.tile[y2][x2] != HP)){
+                || (map_data.tile[y1][x2] > 0 && map_data.tile[y1][x2] < 20 && map_data.tile[y1][x2] != HP
+                    && map_data.tile[y1][x2] != SWORD && map_data.tile[y1][x2] != LIGHTNING)
+                ||(map_data.tile[y2][x2] > 0 && map_data.tile[y2][x2] < 20 && map_data.tile[y2][x2] != HP
+                   && map_data.tile[y2][x2] != SWORD && map_data.tile[y2][x2] != LIGHTNING)){
+
+                //int len = bounded_right_move - x_pos;
+                //if (len > 0) bounded_left_move -= len;
+
                 input_type_.left_ = 1;
                 input_type_.right_ = 0;
                 loadImage("assets//slimemonster.jpg" , screen);
             }else if ( x_pos < bounded_left_move
-                      ||(map_data.tile[y1][x1] > 0 && map_data.tile[y1][x1] < 20 && map_data.tile[y1][x1] != HP)
-                    || (map_data.tile[y2][x1] > 0 && map_data.tile[y2][x1] < 20 && map_data.tile[y2][x1] != HP )){
+                      ||(map_data.tile[y1][x1] > 0 && map_data.tile[y1][x1] < 20 && map_data.tile[y1][x1] != HP
+                         && map_data.tile[y1][x1] != SWORD && map_data.tile[y1][x1] != LIGHTNING)
+                    || (map_data.tile[y2][x1] > 0 && map_data.tile[y2][x1] < 20 && map_data.tile[y2][x1] != HP
+                        && map_data.tile[y2][x1] != SWORD && map_data.tile[y2][x1] != LIGHTNING )){
+
+                int len2 = x_pos - bounded_left_move;
+                if ( len2 > 0) bounded_right_move += len2;
+
                 input_type_.left_ = 0;
                 input_type_.right_ = 1;
                 loadImage("assets//slimemonsterright.jpg" , screen);
@@ -227,9 +249,9 @@ void MonsterThreadObject::HandleMove(SDL_Renderer* screen , Map &map_data){
 }
 
 
-void MonsterThreadObject::InitBullet(AttackObject* p_bullet , SDL_Renderer* screen){
+void MonsterThreadObject::InitBullet(AttackObject* p_bullet , SDL_Renderer* screen , int type_attack){
     if (p_bullet != NULL){
-        p_bullet->set_attack_type(AttackObject::GATTINGGUN);
+        p_bullet->set_attack_type(type_attack);
         bool ret = p_bullet->LoadImageAttack(screen);
         if (ret){
             p_bullet->set_is_move(true);
@@ -297,6 +319,26 @@ void MonsterThreadObject::HandleStateHp(SDL_Renderer* screen){
         if ( p_state != NULL){
             p_state->Render(screen , NULL);
             p_state->setRect(this->get_x_pos() - map_x + 10 , this->get_y_pos() - map_y - 10);
+        }
+    }
+}
+
+void MonsterThreadObject::InitStateBoss(StateHp* p_state , SDL_Renderer* screen , const int& state){
+    if (p_state != NULL){
+        bool ret = p_state->loadImageHPBoss(screen , state);
+        if (ret){
+            p_state->setRect(this->get_x_pos() - map_x + 30 , this->get_y_pos() - map_y -30);
+            list_state_hp.push_back(p_state);
+        }
+    }
+}
+
+void MonsterThreadObject::HandleStateHpBoss(SDL_Renderer* screen){
+    for ( int i =0 ; i < list_state_hp.size() ; i++){
+        StateHp* p_state = list_state_hp.at(i);
+        if ( p_state != NULL){
+            p_state->Render(screen , NULL);
+            p_state->setRect(this->get_x_pos() - map_x + 30 , this->get_y_pos() - map_y - 30);
         }
     }
 }

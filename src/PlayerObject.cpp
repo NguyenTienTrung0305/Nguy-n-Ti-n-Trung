@@ -13,6 +13,7 @@ PlayerObject::PlayerObject()
     width_frame_ = 0;
     heigth_frame_ = 0;
     status_ = FREE_FALL;
+    type_weapon = STKNIFE;
 
     key_events_.left_ = 0;
     key_events_.right_ = 0;
@@ -30,6 +31,8 @@ PlayerObject::PlayerObject()
     move_ = NULL;
     throwknife_ = NULL;
     die_ = NULL;
+
+
 
 }
 
@@ -153,23 +156,61 @@ void PlayerObject::HandelInputAction(SDL_Event events , SDL_Renderer* screen){
 
     if ( events.type == SDL_MOUSEBUTTONDOWN){
         if ( events.button.button == SDL_BUTTON_LEFT){
-            throwknife_ = Mix_LoadWAV("music//throwknife.wav");
-            Mix_PlayChannel(-1 , throwknife_ , 0);
-            AttackObject* p_attack = new AttackObject();
+            if (type_weapon == STKNIFE){
+                throwknife_ = Mix_LoadWAV("music//throwknife.wav");
+                Mix_PlayChannel(-1 , throwknife_ , 0);
+                AttackObject* p_attack = new AttackObject();
 
-            if ( status_ == WALK_LEFT){
-                p_attack->loadImage("assets//attackleft.jpg" , screen);
-                p_attack->set_attack_direction(AttackObject::DIR_LEFT);
-                p_attack->setRect(this->rect_.x , rect_.y + heigth_frame_*0.3);
-            }else{
-                p_attack->loadImage("assets//attackright.jpg" , screen);
-                p_attack->set_attack_direction(AttackObject::DIR_RIGHT);
-                p_attack->setRect(this->rect_.x + width_frame_ -20 , rect_.y + heigth_frame_*0.3);
+                if ( status_ == WALK_LEFT){
+                    p_attack->loadImage("assets//attackleft.jpg" , screen);
+                    p_attack->set_attack_direction(AttackObject::DIR_LEFT);
+                    p_attack->setRect(this->rect_.x , rect_.y + heigth_frame_*0.3);
+                }else{
+                    p_attack->loadImage("assets//attackright.jpg" , screen);
+                    p_attack->set_attack_direction(AttackObject::DIR_RIGHT);
+                    p_attack->setRect(this->rect_.x + width_frame_ -20 , rect_.y + heigth_frame_*0.3);
+                }
+                p_attack->set_x_val(20);
+                p_attack->set_is_move(true);
+                p_attack_list.push_back(p_attack); // nap knife
+            }
+            else if ( type_weapon == STSWORD){
+                throwknife_ = Mix_LoadWAV("music//sword.wav");
+                Mix_PlayChannel(-1 , throwknife_ , 0);
+                AttackObject* p_attack = new AttackObject();
+
+                if ( status_ == WALK_LEFT){
+                    p_attack->loadImage("assets//swordleft.png" , screen);
+                    p_attack->set_attack_direction(AttackObject::DIR_LEFT);
+                    p_attack->setRect(this->rect_.x , rect_.y + heigth_frame_*0.3);
+                }else{
+                    p_attack->loadImage("assets//swordright.png" , screen);
+                    p_attack->set_attack_direction(AttackObject::DIR_RIGHT);
+                    p_attack->setRect(this->rect_.x + width_frame_ -20 , rect_.y + heigth_frame_*0.3);
+                }
+                p_attack->set_x_val(20);
+                p_attack->set_is_move(true);
+                p_attack_list.push_back(p_attack); // nap knife
+            }
+            else if ( type_weapon == STLIGHTNING){
+                throwknife_ = Mix_LoadWAV("music//lightning.wav");
+                Mix_PlayChannel(-1 , throwknife_ , 0);
+                AttackObject* p_attack = new AttackObject();
+
+                if ( status_ == WALK_LEFT){
+                    p_attack->loadImage("assets//lightningleft.png" , screen);
+                    p_attack->set_attack_direction(AttackObject::DIR_LEFT);
+                    p_attack->setRect(this->rect_.x , rect_.y + heigth_frame_*0.3);
+                }else{
+                    p_attack->loadImage("assets//lightningright.png" , screen);
+                    p_attack->set_attack_direction(AttackObject::DIR_RIGHT);
+                    p_attack->setRect(this->rect_.x + width_frame_ -20 , rect_.y + heigth_frame_*0.3);
+                }
+                p_attack->set_x_val(20);
+                p_attack->set_is_move(true);
+                p_attack_list.push_back(p_attack); // nap knife
             }
 
-            p_attack->set_x_val(20);
-            p_attack->set_is_move(true);
-            p_attack_list.push_back(p_attack); // nap knife
         }
     }
 }
@@ -248,6 +289,24 @@ void PlayerObject::CheckToMap(Map& map_data){
             map_data.tile[y2][x1] = 0;
         }
 
+        // eat item sword
+        if (map_data.tile[y1][x2] == SWORD || map_data.tile[y2][x2] == SWORD || map_data.tile[y1][x1] == SWORD || map_data.tile[y2][x1] == SWORD){
+            type_weapon = STSWORD;
+            map_data.tile[y1][x2] = 0;
+            map_data.tile[y2][x2] = 0;
+            map_data.tile[y1][x1] = 0;
+            map_data.tile[y2][x1] = 0;
+        }
+
+        // eat item lightning
+        if (map_data.tile[y1][x2] == LIGHTNING || map_data.tile[y2][x2] == LIGHTNING || map_data.tile[y1][x1] == LIGHTNING || map_data.tile[y2][x1] == LIGHTNING){
+            type_weapon = STLIGHTNING;
+            map_data.tile[y1][x2] = 0;
+            map_data.tile[y2][x2] = 0;
+            map_data.tile[y1][x1] = 0;
+            map_data.tile[y2][x1] = 0;
+        }
+
         // winner
         if (map_data.tile[y1][x2] == PRINCESS || map_data.tile[y2][x2] == PRINCESS || map_data.tile[y1][x1] == PRINCESS || map_data.tile[y2][x1] == PRINCESS){
             is_winner = true;
@@ -281,12 +340,33 @@ void PlayerObject::CheckToMap(Map& map_data){
 
 
     if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_y){
+        // hp
         if (map_data.tile[y2][x1] == HP || map_data.tile[y2][x2] == HP || map_data.tile[y1][x1] == HP || map_data.tile[y1][x2] == HP){
             map_data.tile[y2][x1] = 0;
             map_data.tile[y2][x2] = 0;
             map_data.tile[y1][x1] = 0;
             map_data.tile[y1][x2] = 0;
         }
+
+        // sword
+        if (map_data.tile[y2][x1] == SWORD || map_data.tile[y2][x2] == SWORD || map_data.tile[y1][x1] == SWORD || map_data.tile[y1][x2] == SWORD){
+            type_weapon = STSWORD;
+            map_data.tile[y2][x1] = 0;
+            map_data.tile[y2][x2] = 0;
+            map_data.tile[y1][x1] = 0;
+            map_data.tile[y1][x2] = 0;
+        }
+
+        // lightning
+        if (map_data.tile[y2][x1] == LIGHTNING || map_data.tile[y2][x2] == LIGHTNING || map_data.tile[y1][x1] == LIGHTNING || map_data.tile[y1][x2] == LIGHTNING){
+            type_weapon = STLIGHTNING;
+            map_data.tile[y2][x1] = 0;
+            map_data.tile[y2][x2] = 0;
+            map_data.tile[y1][x1] = 0;
+            map_data.tile[y1][x2] = 0;
+        }
+
+
         if (y_val_ > 0){
             if ( (map_data.tile[y2][x1] > 0 && map_data.tile[y2][x1] < 20) || (map_data.tile[y2][x2] > 0 && map_data.tile[y2][x2] < 20)){
                 y_pos = y2 * TILE_SIZE;

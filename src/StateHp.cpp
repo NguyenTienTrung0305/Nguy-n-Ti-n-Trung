@@ -23,3 +23,14 @@ bool StateHp::loadImageState(SDL_Renderer* screen){
     }
     return ret;
 }
+
+bool StateHp::loadImageHPBoss(SDL_Renderer* screen , int state){
+    bool ret = false;
+    if ( state <= 15){
+        std::string s = "boss//boss";
+        s+= std::to_string(state);
+        s += ".png";
+        ret = loadImage(s , screen);
+    }
+    return ret;
+}

@@ -38,6 +38,10 @@ const int RENDER_DRAW_COLOR = 255;
 // item support
 #define HP 15
 #define PRINCESS 49
+#define SWORD 16
+#define LIGHTNING 17
+#define MSSTANDSTILL 21
+#define MSMOVE 40
 
 typedef struct Map{
     // man hinh bat dau o toa do x , y

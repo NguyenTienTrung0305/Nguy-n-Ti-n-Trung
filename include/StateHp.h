@@ -16,6 +16,7 @@ class StateHp : public BaseObject
         };
 
         bool loadImageState(SDL_Renderer* screen);
+        bool loadImageHPBoss(SDL_Renderer* screen , int state);
         void set_state_hp(const int& stateHP){state_hp = stateHP;}
         int get_state_hp() const {return state_hp;}
 
